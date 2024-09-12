@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const props = defineProps<{ totalViews: number }>()
-const count = ref(0)
 </script>
 <template>
   <div
@@ -11,8 +10,5 @@ const count = ref(0)
       {{ totalViews.toLocaleString() }}
     </p>
     <p class="text-sm">views</p>
-    <button @click="count++" class="text-white">
-      {{ count }}
-    </button>
   </div>
 </template>
