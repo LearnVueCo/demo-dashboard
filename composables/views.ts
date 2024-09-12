@@ -11,13 +11,12 @@ export type Views = {
 
 function findCurrentStreak(data: Views[]): number {
   const currentDate = new Date()
-  currentDate.setDate(currentDate.getDate() - 1)
+  currentDate.setDate(currentDate.getDate() - 3)
   let streak = 0
   for (let i = 0; i < data.length; i++) {
     const uploadDate = data[i].uploadDate
     if (uploadDate && uploadDate !== "-") {
       const uploadDateObj = new Date(uploadDate)
-      console.log(uploadDateObj.toString(), currentDate.toString())
       // Check if the upload date is valid and consecutive
       if (uploadDateObj.getDate() === currentDate.getDate()) {
         streak++
@@ -41,7 +40,6 @@ export function useViews() {
   const views = data.filter((r) => r.uploadDate !== "-")
 
   const totalViews = data.reduce((acc, curr) => {
-    console.log(curr.title, curr.totalViews)
     return acc + curr.totalViews
   }, 0)
 

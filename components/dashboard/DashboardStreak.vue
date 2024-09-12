@@ -7,11 +7,11 @@ defineProps<{ streak: number; startDate: string }>()
     <p class="text-7xl font-extrabold text-white">
       {{ streak }}
     </p>
-    <p class="text-sm">
+    <!-- <p class="text-sm">
       days. Started on
       <strong class="text-white">
         {{ startDate }}
       </strong>
-    </p>
+    </p> -->
   </div>
 </template>
