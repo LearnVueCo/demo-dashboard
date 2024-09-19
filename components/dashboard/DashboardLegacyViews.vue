@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Views } from "~/composables/views"
 
-const props = defineProps<{ legacyViews: Views }>()
+const props = defineProps<{ legacyViews: Views | undefined }>()
 </script>
 <template>
   <div
@@ -9,7 +9,7 @@ const props = defineProps<{ legacyViews: Views }>()
   >
     <h2 class="text-xl font-bold text-white">Legacy Views</h2>
     <p class="text-7xl font-extrabold text-white">
-      {{ legacyViews.totalViews.toLocaleString() }}
+      {{ legacyViews?.totalViews.toLocaleString() ?? 0 }}
     </p>
     <p class="text-sm">Views from legacy shorts.</p>
   </div>

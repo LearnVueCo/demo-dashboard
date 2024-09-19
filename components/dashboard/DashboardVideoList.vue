@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Views } from "~/composables/views"
-const props = defineProps<{ views: Views[] }>()
+defineProps<{ views: Views[] }>()
 </script>
 <template>
   <div class="pt-8">

@@ -36,7 +36,7 @@ function findCurrentStreak(data: Views[]): number {
 }
 
 export function useViews() {
-  const legacyViews = data.find((r) => r.uploadDate === "-")
+  const legacyViews: Views | undefined = data.find((r) => r.uploadDate === "-")
   const views = data.filter((r) => r.uploadDate !== "-")
 
   const totalViews = data.reduce((acc, curr) => {
@@ -50,6 +50,23 @@ export function useViews() {
     )
   )
 
+  const viewsByDate = views.reduce((acc, curr) => {
+    curr.views.forEach((c) => {
+      const match = acc.find(
+        (a) => a.date.toDateString() === new Date(c.date).toDateString()
+      )
+      const views =
+        typeof c.view_count === "number" ? c.view_count : parseInt(c.view_count)
+      if (!match) {
+        acc.push({ date: new Date(c.date), views: views })
+      } else {
+        match.views += views
+      }
+      return acc
+    })
+    return acc
+  }, [] as unknown as Array<{ date: Date; views: number }>)
+
   const streakStartingDate = views[views.length - 1 - streak].uploadDate
   //
 
@@ -60,5 +77,6 @@ export function useViews() {
     streak,
     totalViews,
     streakStartingDate,
+    viewsByDate,
   }
 }

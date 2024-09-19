@@ -2,15 +2,17 @@
 import DashboardItem from "./dashboard/DashboardItem.vue"
 import DashboardTotalViews from "./dashboard/DashboardTotalViews.vue"
 
-const { data, views, legacyViews, streak, streakStartingDate, totalViews } =
-  useViews()
+const {
+  views,
+  legacyViews,
+  streak,
+  streakStartingDate,
+  totalViews,
+  viewsByDate,
+} = useViews()
 
 const { locations, getLocation, moveItem } = useMovable({
   default: [
-    {
-      id: "primary",
-      items: [],
-    },
     {
       id: "sidebar",
       items: ["list", "legacyViews"],
@@ -23,14 +25,20 @@ const { locations, getLocation, moveItem } = useMovable({
 })
 
 const debug = ref(false)
-
+const hoveredId = ref<string>()
 provide("debug", debug)
 provide("locations", locations)
 provide("getLocation", getLocation)
-
+provide("hoveredId", hoveredId)
 function changeView(val: { itemId: string; zoneId: string }) {
   const { itemId, zoneId } = val
   moveItem(itemId, zoneId)
+  hoveredId.value = undefined
+}
+
+function handleTemporaryView(val: { zoneId: string }) {
+  const { zoneId } = val
+  hoveredId.value = zoneId
 }
 </script>
 <template>
@@ -47,20 +55,20 @@ function changeView(val: { itemId: string; zoneId: string }) {
         Debug
       </div>
     </DevOnly>
-    {{ locations }}
+
     <div class="grid grid-cols-12 h-dvh gap-4">
       <div class="col-span-8 flex flex-col h-full gap-4">
-        <DashboardDropzone
-          id="primary"
-          zone-id="primary"
-          class="border h-2/3 border-dashed"
-          @update="changeView($event)"
-        />
+        <div
+          class="border h-2/3 border-dashed flex [&>div]:flex-1 p-4 flex-col rounded text-4xl"
+        >
+          <DashboardTotalViews :total-views="totalViews" />
+        </div>
         <DashboardDropzone
           id="bottom"
           zone-id="bottom"
           class="border h-1/3 border-dashed flex [&>div]:flex-1"
           @update="changeView($event)"
+          @drag="handleTemporaryView($event)"
         />
       </div>
       <DashboardDropzone
@@ -68,6 +76,7 @@ function changeView(val: { itemId: string; zoneId: string }) {
         zone-id="sidebar"
         class="col-span-4 border border-dashed flex-col"
         @update="changeView($event)"
+        @drag="handleTemporaryView($event)"
       />
     </div>
     <DashboardItem id="legacyViews" :to="getLocation('legacyViews')">
@@ -84,3 +93,9 @@ function changeView(val: { itemId: string; zoneId: string }) {
     </DashboardItem>
   </div>
 </template>
+
+<style>
+:root {
+  --vis-axis-grid-color: #232629;
+}
+</style>

@@ -15,6 +15,12 @@ function startDrag(evt: DragEvent) {
   evt.dataTransfer.effectAllowed = "move"
   evt.dataTransfer.setData("itemId", "" + attrs.id)
 }
+
+const hoveredId = inject("hoveredId")
+function stopDrag(evt: DragEvent) {
+  dragged.value = false
+  hoveredId.value = undefined
+}
 </script>
 <template>
   <div
@@ -24,7 +30,7 @@ function startDrag(evt: DragEvent) {
     }"
     draggable="true"
     @dragstart="startDrag($event)"
-    @dragend="dragged = false"
+    @dragend="stopDrag($event)"
     v-bind="$attrs"
   >
     <div class="absolute top-1 left-1 cursor-move z-10" ref="handle">
