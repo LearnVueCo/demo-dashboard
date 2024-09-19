@@ -61,7 +61,7 @@ function handleTemporaryView(val: { zoneId: string }) {
         <div
           class="border h-2/3 border-dashed flex [&>div]:flex-1 p-4 flex-col rounded text-4xl"
         >
-          <DashboardTotalViews :total-views="totalViews" />
+          <DashboardChart :views="viewsByDate" />
         </div>
         <DashboardDropzone
           id="bottom"
